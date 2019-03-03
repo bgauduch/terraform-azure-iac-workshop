@@ -1,5 +1,5 @@
-#  Local .terraform directories
-**/.terraform/*
+#  Terraform files & folders
+*.terraform*
 
 # .tfstate files
 *.tfstate
@@ -7,3 +7,9 @@
 
 # .tfvars files
 *.tfvars
+
+# azure files
+*.azure
+
+# other
+*.bash_history
