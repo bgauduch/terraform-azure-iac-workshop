@@ -109,7 +109,7 @@ Comme vous le constatez, des variables sont utilisées. Il faut donc les ajouter
 > Documentation : [variables](https://www.terraform.io/docs/configuration/variables.html)
  
 Veillez à modifier la valeur par défaut de la variable `resource_group_name` en remplaçant `TRIGRAMME` par votre trigramme (1 occurrence) :
-```
+```tf
  variable "azure_region" {
  description = "The Azure Region to be use"
  type        = "string"
@@ -189,7 +189,7 @@ Vous allez maintenant ajouter le groupe de sécurité réseau ainsi que la règl
 > * [Règle de sécurité](https://www.terraform.io/docs/providers/azurerm/r/network_security_rule.html)
 
 Ajouter la configuration des ressources au fichier `main.tf`, veillez à remplacer `TRIGRAMME` par votre trigramme  (2 occurrences) :
-```
+```tf
 resource "azurerm_network_security_group" "az_iac_nsg" {
  name                = "az_iac_nsg_TRIGRAMME"
  location            = "${azurerm_resource_group.az_iac_rg.location}"
@@ -224,7 +224,7 @@ Vous allez maintenant ajouter le réseau virtuel et son sous-réseau dans votre 
 > * [Associer sous réseau et groupe de sécurité](https://www.terraform.io/docs/providers/azurerm/r/subnet_network_security_group_association.html)
 
 Ajouter la configuration des ressources au fichier `main.tf`, veillez à remplacer `TRIGRAMME` par votre trigramme (2 occurrences) :
-```
+```tf
 resource "azurerm_virtual_network" "az_iac_vnet" {
  name                = "az_iac_vnet_TRIGRAMME"
  location            = "${azurerm_resource_group.az_iac_rg.location}"
@@ -249,13 +249,13 @@ resource "azurerm_subnet_network_security_group_association" "az_iac_subnet_nsg_
 ```
 
 Ajouter la variable nécessaire au fichier `variables.tf` :
-````
+```tf
 variable "vnet_range" {
  description = "The ip range for the VNET"
  type        = "string"
  default     = "10.0.0.0/16"
 }
-````
+```
 
 Comme aux étapes précédentes, planifiez le déploiement, corrigez les éventuelles erreurs, et déployez.
 
@@ -267,7 +267,7 @@ Vous allez créer l’IP publique pour accéder à votre VM depuis internet.
 > Documentation : [IP Publique](https://www.terraform.io/docs/providers/azurerm/r/public_ip.html)
 
 Ajouter la configuration des ressources au fichier `main.tf`, veillez à remplacer `TRIGRAMME` par votre trigramme (2 occurrences) :
-```
+```tf
 resource "azurerm_public_ip" "az_iac_pip" {
  name                         = "az_iac_pip_TRIGRAMME"
  location                     = "${azurerm_resource_group.az_iac_rg.location}"
@@ -291,7 +291,7 @@ Dernière étape de l’infrastructure réseau, vous allez créer la carte rése
 > Documentation : [Carte réseau virtuelle](https://www.terraform.io/docs/providers/azurerm/r/network_interface.html)
 
 Ajouter la configuration des ressources au fichier `main.tf`, veillez à remplacer `TRIGRAMME` par votre trigramme (2 occurrences) :
-```
+```tf
 resource "azurerm_network_interface" "az_iac_nic" {
  name                = "az_iac_nic_TRIGRAMME"
  location            = "${azurerm_resource_group.az_iac_rg.location}"
@@ -328,14 +328,14 @@ La première étape consiste à charger le script qui va permettre l’installat
 > * [template Cloud-init](https://www.terraform.io/docs/providers/template/d/cloudinit_config.html)
 
 Ajouter la configuration permettant de charger le script au fichier `main.tf` :
-```
+```tf
 data "template_file" "az_iac_cloudinit_file" {
  template = "${file("${var.cloudinit_script_path}")}"
 }
 ```
 
 Ensuite, ajouter la configuration qui va encoder le script au fichier `main.tf` :
-```
+```tf
 data "template_cloudinit_config" "az_iac_vm_cloudinit_script" {
  gzip          = true
  base64_encode = true
@@ -354,7 +354,7 @@ terraform init
 ```
 
 Il faut enfin ajouter la variable qui référence le chemin du script dans le fichier `variable.tf` :
-```
+```tf
 variable "cloudinit_script_path" {
  description = "The user password on the VM"
  type        = "string"
@@ -368,7 +368,7 @@ La seconde est dernière étape de déploiement consiste à ajouter la configura
 
 Ajouter la configuration au fichier `main.tf`, celle-ci est assez conséquente mais ne fait que reprendre ce que vous avez fait au premier TP.
 Veillez à remplacer `TRIGRAMME` par votre trigramme (1 occurrences) :
-```
+```tf
 resource "azurerm_virtual_machine" "az_iac_vm" {
  name                = "az_iac_vm_TRIGRAMME"
  location            = "${azurerm_resource_group.az_iac_rg.location}"
@@ -406,7 +406,7 @@ resource "azurerm_virtual_machine" "az_iac_vm" {
 ```
 
 Ajouter les nouvelles variables nécéssaires au fichier `variables.tf` :
-```
+```tf
 variable "ubuntu_version" {
  description = "The Ubuntu OS version to be used on VM"
  type        = "string"
