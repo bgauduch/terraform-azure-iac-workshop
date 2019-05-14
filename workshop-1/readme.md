@@ -1,7 +1,7 @@
-# workshop 1 - FR
+# Workshop 1 - FR - Introduction IaaS avec Azure
 Déploiement d’une application sur une VM dans le cloud Azure via le portail web.
 
-
+## Sommaire
 1. Objectifs du TP
 1. Accès au portail web Azure
 1. Création de l’infrastructure

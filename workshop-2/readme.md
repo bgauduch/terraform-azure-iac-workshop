@@ -1,4 +1,4 @@
-# IaC sur Azure avec Terraform - workshop 2 - FR
+# Workshop 2 - FR - IaC sur Azure avec Terraform
 Application de l’IaC sur Azure avec Terraform.
 
 ## Sommaire
@@ -26,7 +26,7 @@ Vous allez déployer la même application que lors du TP précédent, en utilisa
 ## 2. Configuration de l’environnement de développement
 
 ### 2.1. Accès au portail Azure
-Vérifiez que vous avez bien accès au portail web azure (CF. [workshop 1](/worskshop-1)).
+Vérifiez que vous avez bien accès au portail web azure (CF. [workshop 1](/workshop-1)).
 
 Il vous servira uniquement à visualiser les ressources déployés pendant ce TP, visible sur la page `Ressources` accessible depuis le menu latéral.
 N’oubliez pas que vous pouvez à tout moment rafraîchir cette vue pour visualiser les nouvelles ressources :
