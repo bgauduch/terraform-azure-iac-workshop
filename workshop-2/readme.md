@@ -122,7 +122,7 @@ variable "azure_region" {
 variable "resource_group_name" {
   description = "the resource group name"
   type        = "string"
-  default     = "az_iac_rg_mal"
+  default     = "az_iac_rg_TRIGRAMME"
 }
 
 variable "environment_tag" {
