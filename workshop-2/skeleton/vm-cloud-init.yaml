@@ -1,4 +1,4 @@
-#cloud-config exemple from https://docs.microsoft.com/fr-fr/azure/virtual-machines/linux/tutorial-automate-vm-deployment
+# cloud-config exemple from https://docs.microsoft.com/fr-fr/azure/virtual-machines/linux/tutorial-automate-vm-deployment
 package_upgrade: true
 packages:
   - nginx

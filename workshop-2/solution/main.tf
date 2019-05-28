@@ -2,7 +2,7 @@
 * Setup the Cloud provider
 **/
 provider "azurerm" {
-  version = "=1.22.1"
+  version = "=1.29.0"
 }
 
 /**
@@ -11,6 +11,7 @@ provider "azurerm" {
 resource "azurerm_resource_group" "az_iac_rg" {
   name     = "${var.resource_group_name}"
   location = "${var.azure_region}"
+
   tags {
     environment = "${var.environment_tag}"
   }
@@ -48,8 +49,9 @@ resource "azurerm_network_security_rule" "az_iac_nsg_rule_http_allow" {
 resource "azurerm_virtual_network" "az_iac_vnet" {
   name                = "az_iac_vnet_bga"
   location            = "${azurerm_resource_group.az_iac_rg.location}"
-  resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"     
-  address_space = ["${var.vnet_range}"]
+  resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"
+  address_space       = ["${var.vnet_range}"]
+
   tags {
     environment = "${var.environment_tag}"
   }
@@ -62,7 +64,7 @@ resource "azurerm_subnet" "az_iac_subnet" {
   name                 = "az_iac_subnet_bga"
   resource_group_name  = "${azurerm_resource_group.az_iac_rg.name}"
   virtual_network_name = "${azurerm_virtual_network.az_iac_vnet.name}"
-  address_prefix = "${cidrsubnet(var.vnet_range, 8, 1)}"
+  address_prefix       = "${cidrsubnet(var.vnet_range, 8, 1)}"
 }
 
 /**
@@ -77,12 +79,13 @@ resource "azurerm_subnet_network_security_group_association" "az_iac_subnet_nsg_
 * Public IP
 **/
 resource "azurerm_public_ip" "az_iac_pip" {
-  name                         = "az_iac_pip_bga"
-  location                     = "${azurerm_resource_group.az_iac_rg.location}"
-  resource_group_name          = "${azurerm_resource_group.az_iac_rg.name}"
-  ip_version = "ipv4"
-  allocation_method = "Static"
-  domain_name_label = "azure-iac-bga"
+  name                = "az_iac_pip_bga"
+  location            = "${azurerm_resource_group.az_iac_rg.location}"
+  resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"
+  ip_version          = "ipv4"
+  allocation_method   = "Static"
+  domain_name_label   = "azure-iac-bga"
+
   tags {
     environment = "${var.environment_tag}"
   }
@@ -95,12 +98,14 @@ resource "azurerm_network_interface" "az_iac_nic" {
   name                = "az_iac_nic_bga"
   location            = "${azurerm_resource_group.az_iac_rg.location}"
   resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"
+
   ip_configuration {
     name                          = "az_iac_nic_ip_config"
     subnet_id                     = "${azurerm_subnet.az_iac_subnet.id}"
     private_ip_address_allocation = "dynamic"
     public_ip_address_id          = "${azurerm_public_ip.az_iac_pip.id}"
   }
+
   tags {
     environment = "${var.environment_tag}"
   }
@@ -141,21 +146,25 @@ resource "azurerm_virtual_machine" "az_iac_vm" {
     sku       = "${var.ubuntu_version}"
     version   = "latest"
   }
+
   storage_os_disk {
     name              = "az_iac_vm_os_disk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
+
   os_profile {
     computer_name  = "az-iac-vm-bga"
     admin_username = "${var.user_name}"
     admin_password = "${var.user_password}"
-    custom_data          = "${data.template_cloudinit_config.az_iac_vm_cloudinit_script.rendered}"
+    custom_data    = "${data.template_cloudinit_config.az_iac_vm_cloudinit_script.rendered}"
   }
+
   os_profile_linux_config {
     disable_password_authentication = false
   }
+
   tags {
     environment = "${var.environment_tag}"
   }
