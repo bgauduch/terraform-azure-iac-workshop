@@ -112,7 +112,7 @@ Comme vous le constatez, des variables sont utilisées. Il faut donc les ajouter
  
 Veillez à modifier la valeur par défaut de la variable `resource_group_name` en remplaçant `TRIGRAMME` par votre trigramme (1 occurrence) :
 ```tf
- variable "azure_region" {
+variable "azure_region" {
  description = "The Azure Region to be use"
  type        = "string"
  default     = "North Europe"
