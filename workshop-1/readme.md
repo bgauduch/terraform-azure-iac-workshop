@@ -2,16 +2,16 @@
 Déploiement d’une application sur une VM dans le cloud Azure via le portail web.
 
 ## Sommaire
-1. Objectifs du TP
-1. Accès au portail web Azure
-1. Création de l’infrastructure
-    1. Création du Groupe de Ressources
-    1. Réseau virtuel et sous-réseau
-    1. Groupe de sécurité
-    1. IP Publique
-1. Création de la machine virtuelle
-1. Validation du déploiement
-1. Nettoyage des ressources
+1. [Objectifs du TP](#1.-objectifs-du-tp)
+1. [Accès au portail web Azure](#2.-accès-au-portail-web-Azure)
+1. [Création de l’infrastructure](#3.-création-de-l’infrastructure)
+    1. [Création du Groupe de Ressources](#3.1.-création-du-groupe-de-ressources)
+    1. [Réseau virtuel et sous-réseau](#3.2.-réseau-virtuel-et-sous-réseau)
+    1. [Groupe de sécurité](#3.3.-groupe-de-sécurité)
+    1. [IP Publique](#3.4.-ip-publique)
+1. [Création de la machine virtuelle](#4.-création-de-la-machine-virtuelle)
+1. [Validation du déploiement](#5.-validation-du-déploiement)
+1. [Nettoyage des ressources](#6.-nettoyage-des-ressources)
 
 ## 1. Objectifs du TP
 Mettre en place l’infrastructure nécessaire pour la création d’une machine virtuelle Azure.
@@ -171,6 +171,7 @@ Cliquez sur `Ajouter` dans le menu de la nouvelle fenêtre :
 Configurer la règle de la manière suivante :
 * `Plage de ports de destination` : saisir 80
 * `Nom` : saisir `allow_port_80`
+
 Laisser le reste par défaut.
 
 ![Portail web Azure - configurer une régle entrante pour groupe de sécurité](/workshop-1/resources/nsg/09_az_nsg_rules_inbound_config.jpg)
