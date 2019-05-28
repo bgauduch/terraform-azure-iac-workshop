@@ -2,5 +2,5 @@
 * Setup the Cloud provider
 **/
 provider "azurerm" {
-  version = "=1.22.1"
+  version = "=1.29.0"
 }
