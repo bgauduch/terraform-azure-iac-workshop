@@ -350,12 +350,6 @@ data "template_cloudinit_config" "az_iac_vm_cloudinit_script" {
 }
 ```
 
-Notez que nous utilisons ici un nouveau plugin Terraform qu’il faut installer : `data`.
-Effectuer une nouvelle initialisation du projet pour permettre à Terraform de télécharger le plugin manquant :
-```
-terraform init
-```
-
 Il faut enfin ajouter la variable qui référence le chemin du script dans le fichier `variable.tf` :
 ```tf
 variable "cloudinit_script_path" {
@@ -363,6 +357,12 @@ variable "cloudinit_script_path" {
  type        = "string"
  default = "vm-cloud-init.yaml"
 }
+```
+
+Notez que nous utilisons ici un nouveau plugin Terraform qu’il faut installer : `data`.
+Effectuer une nouvelle initialisation du projet pour permettre à Terraform de télécharger le plugin manquant :
+```
+terraform init
 ```
 
 
