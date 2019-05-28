@@ -133,7 +133,7 @@ variable "environment_tag" {
 
 Effectuer une validation syntaxique de votre configuration:
 ```bash
-terrafom validate
+terraform validate
 ```
 
 Vous pouvez alors visualiser les actions que Terraform va réaliser sur Azure :
