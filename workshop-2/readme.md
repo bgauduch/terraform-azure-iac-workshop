@@ -99,11 +99,12 @@ Vous allez maintenant créer les bases de votre infrastructure, en utilisant Ter
 Ajoutez la configuration de votre groupe de ressource au fichier `main.tf` :
 ```tf
 resource "azurerm_resource_group" "az_iac_rg" {
- name     = "${var.resource_group_name}"
- location = "${var.azure_region}"
- tags {
-   environment = "${var.environment_tag}"
- }
+  name     = "${var.resource_group_name}"
+  location = "${var.azure_region}"
+
+  tags {
+    environment = "${var.environment_tag}"
+  }
 }
 ```
 
@@ -112,28 +113,28 @@ Comme vous le constatez, des variables sont utilisées. Il faut donc les ajouter
  
 Veillez à modifier la valeur par défaut de la variable `resource_group_name` en remplaçant `TRIGRAMME` par votre trigramme (1 occurrence) :
 ```tf
- variable "azure_region" {
- description = "The Azure Region to be use"
- type        = "string"
- default     = "North Europe"
+variable "azure_region" {
+  description = "The Azure Region to be use"
+  type        = "string"
+  default     = "North Europe"
 }
 
 variable "resource_group_name" {
- description = "the resource group name"
- type        = "string"
- default     = "az_iac_rg_TRIGRAMME"
+  description = "the resource group name"
+  type        = "string"
+  default     = "az_iac_rg_mal"
 }
 
 variable "environment_tag" {
- description = "the current environement tag"
- type        = "string"
- default     = "production"
+  description = "the current environement tag"
+  type        = "string"
+  default     = "production"
 }
 ```
 
 Effectuer une validation syntaxique de votre configuration:
 ```bash
-terrafom validate
+terraform validate
 ```
 
 Vous pouvez alors visualiser les actions que Terraform va réaliser sur Azure :
