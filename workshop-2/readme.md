@@ -3,22 +3,23 @@ Application de l’IaC sur Azure avec Terraform.
 
 ## Sommaire
 
-1. Objectif du TP
-1. Configuration de l’environnement de développement
-    1. Accès au portail Azure
-    1. Installation des outils
-    1. Initialisation du projet
-1. Création de l’infrastructure
-    1. Groupe de ressources
-    1. Groupe de sécurité
-    1. Réseau virtuel
-    1. IP publique
-    1. Carte réseau
-1. Création de la VM
-    1. Configuration du script de démarrage
-    1. Configuration de la VM
-1. Validation du déploiement
-1. Nettoyage des ressources
+1. [Objectif du TP](#1.-objectif-du-tp)
+1. [Configuration de l’environnement de développement](#2.-configuration-de-l’environnement-de-développement)
+    1. [Accès au portail Azure](#2.1.-accès-au-portail-azure)
+    1. [Installation des outils](#2.2.-installation-des-outils)
+    1. [Initialisation du projet](#2.3.-initialisation-du-projet)
+1. [Création de l’infrastructure](#3.-création-de-l’infrastructure)
+    1. [Groupe de ressources](#3.1.-groupe-de-ressources)
+    1. [Groupe de sécurité](#3.2.-groupe-de-sécurité)
+    1. [Réseau virtuel](#3.3.-réseau-virtuel)
+    1. [IP publique](#3.4.-ip-publique)
+    1. [Carte réseau](#3.5.-carte-réseau)
+1. [Création de la VM](#4.-création-de-la-vm)
+    1. [Configuration du script de démarrage](#4.1.-configuration-du-script-de-démarrage)
+    1. [Configuration de la VM](#4.2.-configuration-de-la-vm)
+1. [Validation du déploiement](#5.-validation-du-déploiement)
+1. [Aller plus loin](#6.-aller-plus-loin)
+1. [Nettoyage des ressources](#7.-nettoyage-des-ressources)
 
 ## 1. Objectif du TP
 Vous allez déployer la même application que lors du TP précédent, en utilisant cette fois l’outil Terraform.
@@ -53,16 +54,16 @@ Vous allez récupérer le squelette du TP afin d’initialiser votre environneme
 
 Seul le contenu du répertoire `/workshop-2/skeleton` sera utilisé pour la suite.
 
-A noter que les solutions des différentes étapes sont dans `/workshop-2/solution`, à n'utiliser qu'en dernier recours bien entendu, à vous de jouer le jeux !
+A noter que les solutions des différentes étapes sont dans `/workshop-2/solution`, à n'utiliser qu'en dernier recours bien entendu, à vous de jouer le jeu !
 
-Sur Cloudshell, clonez le dépôt github:
+Sur Cloudshell, clonez le dépôt github **en utilisant HTTPS** :
 ```bash
-git clone https://github.com/bgauduch/azure-iac-workshop
+git clone https://github.com/bgauduch/terraform-azure-iac-workshop.git
 ```
 
-Naviguez dans le répertoire `TP2-skeleton` :
+Naviguez dans le répertoire `workshop-2/skeleton` :
 ```bash
-cd azure-iac-workshop/TP2-skeleton/
+cd terraform-azure-iac-workshop/workshop-2/skeleton/
 ```
 
 Lancer le script de configuration de votre environnement, normalement il doit télécharger l’image Docker et lancer celle-ci (peut prendre du temps la première fois) :
@@ -466,7 +467,20 @@ Maintenant que vous avez construit les scripts de configuration et variabilisé 
 
 Vous pouvez apporter les modifications souhaitées directement aux fichiers de configuration pour mettre à jour votre infrastructure, ou encore un déployer une nouvelle, sans passer par le portail web.
 
-## 6. Nettoyage des ressources
+## 6. Aller plus loin
+Si vous avez terminé les étapes précédentes et qu'il vous reste du temps, vous pouvez aller plus loin en effectuant les tâches suivantes :
+* Explorer les autres fonctionnalitées offertes par le CLI Terraform:
+  * Les graphs de ressource et leurs affichage
+  * Le formatage des fichiers de votre projet
+  * l'inspection de votre état courant
+  * etc.
+* Rendre votre déploiement modulaire, en séparant la création de votre stack réseau de la création de votre VM par exemple
+* Explorer les workspaces pour déployer plusieurs environnements à partir des mêmes descripteurs Terraform
+* Creuser le partage de l'état Terraform courant avec la notion de "remote state" pour travailler en équipe sur une infrastructure partagée
+
+Vous pouvez vous référer à la [documentation](https://www.terraform.io/docs/index.html), des exemples sont aussi disponibles sur [ce repository](https://github.com/bgauduch/terraform-azure-demo) 
+
+## 7. Nettoyage des ressources
 Dernière étape de ce TP : la suppression des ressources déployée.
 
 Rien de plus simple, une commande suffit (répondre `yes` à la demande de confirmation) :
