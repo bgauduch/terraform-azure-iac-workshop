@@ -260,12 +260,17 @@ resource "azurerm_subnet" "az_iac_subnet" {
   resource_group_name  = "${azurerm_resource_group.az_iac_rg.name}"
   virtual_network_name = "${azurerm_virtual_network.az_iac_vnet.name}"
   address_prefix       = "${cidrsubnet(var.vnet_range, 8, 1)}"
+
+  # The following is deprecated, but fix an issue where the subnet<->NSG association is recreated at every 'terraform apply'
+  # Terraform CLI will yield a deprecation warning.
+  network_security_group_id = "${azurerm_network_security_group.az_iac_nsg.id}"
 }
 
 resource "azurerm_subnet_network_security_group_association" "az_iac_subnet_nsg_bind" {
   subnet_id                 = "${azurerm_subnet.az_iac_subnet.id}"
   network_security_group_id = "${azurerm_network_security_group.az_iac_nsg.id}"
 }
+
 ```
 
 Ajouter la variable nécessaire au fichier `variables.tf` :
