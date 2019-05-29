@@ -44,7 +44,7 @@ variable "vm_size" {
 }
 
 variable "user_name" {
-  description = "The username on the VM"
+  description = "The username for the VM"
   type        = "string"
   default     = "azureuser"
 }
@@ -55,7 +55,7 @@ variable "user_password" {
 }
 
 variable "cloudinit_script_path" {
-  description = "The user password on the VM"
+  description = "The Cloud Init script path, used to bootstrap the VM"
   type        = "string"
   default     = "vm-cloud-init.yaml"
 }
