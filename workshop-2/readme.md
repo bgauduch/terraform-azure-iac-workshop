@@ -186,7 +186,7 @@ Bravo, vous venez de déployer votre première ressource sur Azure avec Terrafor
 * Si tout est conforme, déploiement des ressources.
 
 ### 3.2. Groupe de sécurité
-Vous allez maintenant ajouter le groupe de sécurité réseau ainsi que la règle autorisant les connection entrante HTTP.
+Vous allez maintenant ajouter le groupe de sécurité réseau ainsi que la règle autorisant les connexions entrantes HTTP.
 
 > Documentation : 
 > * [Groupe de sécurité](https://www.terraform.io/docs/providers/azure/r/security_group.html)
