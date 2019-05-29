@@ -43,6 +43,7 @@ Pour ce TP, 2 outils sont nécessaires :
 Afin d’en simplifier l’utilisation, nous allons utiliser un container Docker dans le terminal Cloudshell de Google Cloud (à faire en groupe avec l’animateur).
 
 Pour valider votre configuration, ouvrez votre terminal et saisissez la commande suivante :
+
 ```bash
 docker container run hello-world
 ```
@@ -57,21 +58,25 @@ Seul le contenu du répertoire `/workshop-2/skeleton` sera utilisé pour la suit
 A noter que les solutions des différentes étapes sont dans `/workshop-2/solution`, à n'utiliser qu'en dernier recours bien entendu, à vous de jouer le jeu !
 
 Sur Cloudshell, clonez le dépôt github **en utilisant HTTPS** :
+
 ```bash
 git clone https://github.com/bgauduch/terraform-azure-iac-workshop.git
 ```
 
 Naviguez dans le répertoire `workshop-2/skeleton` :
+
 ```bash
 cd terraform-azure-iac-workshop/workshop-2/skeleton/
 ```
 
 Lancer le script de configuration de votre environnement, normalement il doit télécharger l’image Docker et lancer celle-ci (peut prendre du temps la première fois) :
+
 ```bash
 ./env-init.sh
 ```
 
 Une fois que l’image Docker est téléchargé et que le container est lancé, vérifiez que vous avez bien accès aux commandes Azure et Terraform en affichant leurs aides :
+
 ```bash
 az -h
 
@@ -79,11 +84,13 @@ terraform -h
 ```
 
 Initialisez Terraform. Vous devriez voir apparaître de nouveaux fichiers téléchargés par Terraform pour communiquer avec Azure (provider AzureRM, sous forme de plugin) :
+
 ```bash
 terraform init
 ```
 
 Finalement, connectez vous à Azure en suivant les instructions de la commande suivante (vous aurez besoins de votre login du portail Azure) :
+
 ```bash
 az login
 ```
@@ -97,6 +104,7 @@ Vous allez maintenant créer les bases de votre infrastructure, en utilisant Ter
 > Documentation : [groupe de ressource](https://www.terraform.io/docs/providers/azurerm/r/resource_group.html )
 
 Ajoutez la configuration de votre groupe de ressource au fichier `main.tf` :
+
 ```tf
 resource "azurerm_resource_group" "az_iac_rg" {
   name     = "${var.resource_group_name}"
@@ -112,6 +120,7 @@ Comme vous le constatez, des variables sont utilisées. Il faut donc les ajouter
 > Documentation : [variables](https://www.terraform.io/docs/configuration/variables.html)
  
 Veillez à modifier la valeur par défaut de la variable `resource_group_name` en remplaçant `TRIGRAMME` par votre trigramme (1 occurrence) :
+
 ```tf
 variable "azure_region" {
   description = "The Azure Region to be use"
@@ -133,16 +142,19 @@ variable "environment_tag" {
 ```
 
 Effectuer une validation syntaxique de votre configuration:
+
 ```bash
 terraform validate
 ```
 
 Vous pouvez alors visualiser les actions que Terraform va réaliser sur Azure :
+
 ```bash
 terraform plan
 ```
 
 Le résultat doit être similaire à ceci :
+
 ```bash
 ------------------------------------------------------------------------
 
@@ -168,6 +180,7 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 En cas d’erreur, bien lire les informations affichées dans la console pour identifier la source du problème et corriger la configuration !
 
 Une fois que vous avez obtenu votre plan, vous pouvez alors appliquer ces modifications sur votre infrastructure (ne pas oublier de répondre `yes` lorsque c’est demandé) :
+
 ```bash
 terraform apply
 ```
@@ -193,25 +206,26 @@ Vous allez maintenant ajouter le groupe de sécurité réseau ainsi que la règl
 > * [Règle de sécurité](https://www.terraform.io/docs/providers/azurerm/r/network_security_rule.html)
 
 Ajouter la configuration des ressources au fichier `main.tf`, veillez à remplacer `TRIGRAMME` par votre trigramme  (2 occurrences) :
+
 ```tf
 resource "azurerm_network_security_group" "az_iac_nsg" {
- name                = "az_iac_nsg_TRIGRAMME"
- location            = "${azurerm_resource_group.az_iac_rg.location}"
- resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"
+  name                = "az_iac_nsg_TRIGRAMME"
+  location            = "${azurerm_resource_group.az_iac_rg.location}"
+  resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"
 }
 
 resource "azurerm_network_security_rule" "az_iac_nsg_rule_http_allow" {
- name                        = "az_iac_nsg_rule_http_allow_TRIGRAMME"
- priority                    = 100
- direction                   = "Inbound"
- access                      = "Allow"
- protocol                    = "*"
- source_port_range           = "*"
- destination_port_range      = "80"
- source_address_prefix       = "*"
- destination_address_prefix  = "*"
- resource_group_name         = "${azurerm_resource_group.az_iac_rg.name}"
- network_security_group_name = "${azurerm_network_security_group.az_iac_nsg.name}"
+  name                        = "az_iac_nsg_rule_http_allow_TRIGRAMME"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "80"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = "${azurerm_resource_group.az_iac_rg.name}"
+  network_security_group_name = "${azurerm_network_security_group.az_iac_nsg.name}"
 }
 ```
 
@@ -228,36 +242,39 @@ Vous allez maintenant ajouter le réseau virtuel et son sous-réseau dans votre 
 > * [Associer sous réseau et groupe de sécurité](https://www.terraform.io/docs/providers/azurerm/r/subnet_network_security_group_association.html)
 
 Ajouter la configuration des ressources au fichier `main.tf`, veillez à remplacer `TRIGRAMME` par votre trigramme (2 occurrences) :
+
 ```tf
 resource "azurerm_virtual_network" "az_iac_vnet" {
- name                = "az_iac_vnet_TRIGRAMME"
- location            = "${azurerm_resource_group.az_iac_rg.location}"
- resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"    
- address_space = ["${var.vnet_range}"]
- tags {
-   environment = "${var.environment_tag}"
- }
+  name                = "az_iac_vnet_TRIGRAMME"
+  location            = "${azurerm_resource_group.az_iac_rg.location}"
+  resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"
+  address_space       = ["${var.vnet_range}"]
+
+  tags {
+    environment = "${var.environment_tag}"
+  }
 }
 
 resource "azurerm_subnet" "az_iac_subnet" {
- name                 = "az_iac_subnet_TRIGRAMME"
- resource_group_name  = "${azurerm_resource_group.az_iac_rg.name}"
- virtual_network_name = "${azurerm_virtual_network.az_iac_vnet.name}"
- address_prefix = "${cidrsubnet(var.vnet_range, 8, 1)}"
+  name                 = "az_iac_subnet_TRIGRAMME"
+  resource_group_name  = "${azurerm_resource_group.az_iac_rg.name}"
+  virtual_network_name = "${azurerm_virtual_network.az_iac_vnet.name}"
+  address_prefix       = "${cidrsubnet(var.vnet_range, 8, 1)}"
 }
 
 resource "azurerm_subnet_network_security_group_association" "az_iac_subnet_nsg_bind" {
- subnet_id                 = "${azurerm_subnet.az_iac_subnet.id}"
- network_security_group_id = "${azurerm_network_security_group.az_iac_nsg.id}"
+  subnet_id                 = "${azurerm_subnet.az_iac_subnet.id}"
+  network_security_group_id = "${azurerm_network_security_group.az_iac_nsg.id}"
 }
 ```
 
 Ajouter la variable nécessaire au fichier `variables.tf` :
+
 ```tf
 variable "vnet_range" {
- description = "The ip range for the VNET"
- type        = "string"
- default     = "10.0.0.0/16"
+  description = "The ip range for the VNET"
+  type        = "string"
+  default     = "10.0.0.0/16"
 }
 ```
 
@@ -271,17 +288,19 @@ Vous allez créer l’IP publique pour accéder à votre VM depuis internet.
 > Documentation : [IP Publique](https://www.terraform.io/docs/providers/azurerm/r/public_ip.html)
 
 Ajouter la configuration des ressources au fichier `main.tf`, veillez à remplacer `TRIGRAMME` par votre trigramme (2 occurrences) :
+
 ```tf
 resource "azurerm_public_ip" "az_iac_pip" {
- name                         = "az_iac_pip_TRIGRAMME"
- location                     = "${azurerm_resource_group.az_iac_rg.location}"
- resource_group_name          = "${azurerm_resource_group.az_iac_rg.name}"
- ip_version = "ipv4"
- allocation_method = "Static"
- domain_name_label = "azure-iac-TRIGRAMME"
- tags {
-   environment = "${var.environment_tag}"
- }
+  name                = "az_iac_pip_TRIGRAMME"
+  location            = "${azurerm_resource_group.az_iac_rg.location}"
+  resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"
+  ip_version          = "ipv4"
+  allocation_method   = "Static"
+  domain_name_label   = "azure-iac-TRIGRAMME"
+
+  tags {
+    environment = "${var.environment_tag}"
+  }
 }
 ```
 
@@ -295,21 +314,23 @@ Dernière étape de l’infrastructure réseau, vous allez créer la carte rése
 > Documentation : [Carte réseau virtuelle](https://www.terraform.io/docs/providers/azurerm/r/network_interface.html)
 
 Ajouter la configuration des ressources au fichier `main.tf`, veillez à remplacer `TRIGRAMME` par votre trigramme (2 occurrences) :
+
 ```tf
 resource "azurerm_network_interface" "az_iac_nic" {
- name                = "az_iac_nic_TRIGRAMME"
- location            = "${azurerm_resource_group.az_iac_rg.location}"
- resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"
+  name                = "az_iac_nic_TRIGRAMME"
+  location            = "${azurerm_resource_group.az_iac_rg.location}"
+  resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"
 
- ip_configuration {
-   name                          = "az_iac_nic_ip_config_TRIGRAMME"
-   subnet_id                     = "${azurerm_subnet.az_iac_subnet.id}"
-   private_ip_address_allocation = "dynamic"
-   public_ip_address_id          = "${azurerm_public_ip.az_iac_pip.id}"
- }
- tags {
-   environment = "${var.environment_tag}"
- }
+  ip_configuration {
+    name                          = "az_iac_nic_ip_config_TRIGRAMME"
+    subnet_id                     = "${azurerm_subnet.az_iac_subnet.id}"
+    private_ip_address_allocation = "dynamic"
+    public_ip_address_id          = "${azurerm_public_ip.az_iac_pip.id}"
+  }
+
+  tags {
+    environment = "${var.environment_tag}"
+  }
 }
 ```
 
@@ -332,103 +353,115 @@ La première étape consiste à charger le script qui va permettre l’installat
 > * [template Cloud-init](https://www.terraform.io/docs/providers/template/d/cloudinit_config.html)
 
 Ajouter la configuration permettant de charger le script au fichier `main.tf` :
+
 ```tf
 data "template_file" "az_iac_cloudinit_file" {
- template = "${file("${var.cloudinit_script_path}")}"
+  template = "${file("${var.cloudinit_script_path}")}"
 }
 ```
 
 Ensuite, ajouter la configuration qui va encoder le script au fichier `main.tf` :
+
 ```tf
 data "template_cloudinit_config" "az_iac_vm_cloudinit_script" {
- gzip          = true
- base64_encode = true
+  gzip          = true
+  base64_encode = true
 
- part {
-   content_type = "text/cloud-config"
-   content      = "${data.template_file.az_iac_cloudinit_file.rendered}"
- }
+  part {
+    content_type = "text/cloud-config"
+    content      = "${data.template_file.az_iac_cloudinit_file.rendered}"
+  }
 }
 ```
 
 Il faut enfin ajouter la variable qui référence le chemin du script dans le fichier `variable.tf` :
+
 ```tf
 variable "cloudinit_script_path" {
- description = "The user password on the VM"
- type        = "string"
- default = "vm-cloud-init.yaml"
+  description = "The Cloud Init script path, used to bootstrap the VM"
+  type        = "string"
+  default     = "vm-cloud-init.yaml"
 }
 ```
 
 Notez que nous utilisons ici un nouveau plugin Terraform qu’il faut installer : `data`.
 Effectuer une nouvelle initialisation du projet pour permettre à Terraform de télécharger le plugin manquant :
-```
+
+```bash
 terraform init
 ```
-
 
 ### 4.2. Configuration de la VM
 La seconde est dernière étape de déploiement consiste à ajouter la configuration de l’ensemble de la VM.
 
 Ajouter la configuration au fichier `main.tf`, celle-ci est assez conséquente mais ne fait que reprendre ce que vous avez fait au premier TP.
 Veillez à remplacer `TRIGRAMME` par votre trigramme (1 occurrences) :
+
 ```tf
 resource "azurerm_virtual_machine" "az_iac_vm" {
- name                = "az_iac_vm_TRIGRAMME"
- location            = "${azurerm_resource_group.az_iac_rg.location}"
- resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"
+  name                = "az_iac_vm_TRIGRAMME"
+  location            = "${azurerm_resource_group.az_iac_rg.location}"
+  resource_group_name = "${azurerm_resource_group.az_iac_rg.name}"
 
- network_interface_ids         = ["${azurerm_network_interface.az_iac_nic.id}"]
- vm_size                       = "${var.vm_size}"
- delete_os_disk_on_termination = true
+  network_interface_ids         = ["${azurerm_network_interface.az_iac_nic.id}"]
+  vm_size                       = "${var.vm_size}"
+  delete_os_disk_on_termination = true
 
- storage_image_reference {
-   publisher = "Canonical"
-   offer     = "UbuntuServer"
-   sku       = "${var.ubuntu_version}"
-   version   = "latest"
- }
- storage_os_disk {
-   name              = "az_iac_vm_os_disk"
-   caching           = "ReadWrite"
-   create_option     = "FromImage"
-   managed_disk_type = "Standard_LRS"
- }
- os_profile {
-   computer_name  = "az-iac-vm-bga"
-   admin_username = "${var.user_name}"
-   admin_password = "${var.user_password}"
-   custom_data          = "${data.template_cloudinit_config.az_iac_vm_cloudinit_script.rendered}"
- }
- os_profile_linux_config {
-   disable_password_authentication = false
- }
- tags {
-   environment = "${var.environment_tag}"
- }
+  storage_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "${var.ubuntu_version}"
+    version   = "latest"
+  }
+  
+  storage_os_disk {
+    name              = "az_iac_vm_os_disk"
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "Standard_LRS"
+  }
+
+  os_profile {
+    computer_name  = "az-iac-vm-bga"
+    admin_username = "${var.user_name}"
+    admin_password = "${var.user_password}"
+    custom_data          = "${data.template_cloudinit_config.az_iac_vm_cloudinit_script.rendered}"
+  }
+
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+
+  tags {
+    environment = "${var.environment_tag}"
+  }
 }
 ```
 
 Ajouter les nouvelles variables nécéssaires au fichier `variables.tf` :
+
 ```tf
 variable "ubuntu_version" {
- description = "The Ubuntu OS version to be used on VM"
- type        = "string"
- default     = "18.04-LTS"
+  description = "The Ubuntu OS version to be used on VM"
+  type        = "string"
+  default     = "18.04-LTS"
 }
+
 variable "vm_size" {
- description = "The Vm Size"
- type        = "string"
- default     = "Standard_A1_v2"
+  description = "The Vm Size"
+  type        = "string"
+  default     = "Standard_A1_v2"
 }
+
 variable "user_name" {
- description = "The username on the VM"
- type        = "string"
+  description = "The username on the VM"
+  type        = "string"
  default     = "azureuser"
 }
+
 variable "user_password" {
- description = "The user password on the VM"
- type        = "string"
+  description = "The user password on the VM"
+  type        = "string"
 }
 ```
 
@@ -485,6 +518,9 @@ Vous pouvez vous référer à la [documentation](https://www.terraform.io/docs/i
 Dernière étape de ce TP : la suppression des ressources déployée.
 
 Rien de plus simple, une commande suffit (répondre `yes` à la demande de confirmation) :
+
+```bash
 terraform destroy
+````
 
 Le tour est joué. Félicitations, vous avez terminé ce TP !
